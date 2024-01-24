@@ -6,7 +6,7 @@ namespace SydPhysics
 	enum class ShapeType
 	{
 		AABB = 1,
-		OBB = 2,
+		POLY = 2,
 		SPHERE = 4,
 		NONE = 256
 	};

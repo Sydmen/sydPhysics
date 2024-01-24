@@ -14,7 +14,7 @@ namespace SydPhysics
 			radius = r;
 		}
 		~SphereShape() {}
-
+		
 		float GetRadius()const{
 			return radius;
 		}

@@ -10,7 +10,7 @@ namespace SydPhysics
 	class PhysicsObject
 	{
 	public:
-		PhysicsObject(float p_mass, Entity* p_entity);
+		PhysicsObject(float mass, Entity* p_entity);
 		~PhysicsObject(){}
 
 		void SayHello();
@@ -22,28 +22,70 @@ namespace SydPhysics
 		void ApplyLinearImpulse(Vector2f& force);
 
 		//Velocity
-		Vector2f GetVelocity() {return vel;}
-		void SetVelocity(Vector2f newVel){vel = newVel;}
+		Vector2f GetVelocity() const
+		{
+			return vel;
+		}
+
+		void SetVelocity(Vector2f newVel) const
+		{
+			vel = newVel;
+		}
 
 		//Angualar velocity
-		float GetAngularVelocity(){return angVel;}
-		void SetAngularVelocity(float newVel){angVel = newVel;}
+		float GetAngularVelocity() const
+		{
+			return angVel;
+		}
+
+		void SetAngularVelocity(float newVel) const
+		{
+			angVel = newVel;
+		}
 
 		Vector2f GetVelocityAtPoint(Vector2f& point);
 		void AddForceAtPoint(Vector2f& point, Vector2f& force);
 
-		float GetTorque(){return torque;}
-		void SetTorque(float& newTorque){torque = newTorque;}
+		float GetTorque() const
+		{
+			return torque;
+		}
+
+		void SetTorque(float& newTorque) const
+		{
+			torque = newTorque;
+		}
 
 		//Helpers
-		Entity* GetEntity() {return myEntity;}
-		Transform* GetTransform(){return myEntity->GetTransform();}
+		Entity* GetEntity() const
+		{
+			return myEntity;
+		}
 
-		float GetMass(){return 1/invMass;}
-		float GetInvMass(){return invMass;}
+		Transform* GetTransform() const
+		{
+			return myEntity->GetTransform();
+		}
 
-		CollisionShape* GetCollider(){return myShape;}
-		void SetCollider(CollisionShape* newShape){myShape = newShape;}
+		float GetMass() const
+		{
+			return 1/invMass;
+		}
+
+		float GetInvMass() const
+		{
+			return invMass;
+		}
+
+		CollisionShape* GetCollider() const
+		{
+			return myShape;
+		}
+
+		void SetCollider(CollisionShape* newShape) const
+		{
+			myShape = newShape;
+		}
 
 		//A tad gross dont you think
 		//Yes i agree
@@ -62,7 +104,7 @@ namespace SydPhysics
 		bool kinematic = true;
 
 		Vector2f vel;
-		Vector2f mForce;
+		Vector2f force;
 
 		float angVel;
 		float torque;

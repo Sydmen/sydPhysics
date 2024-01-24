@@ -2,17 +2,14 @@
 #include <Physics/PhysicsObject.hpp>
 #include <Math/Vector2f.hpp>
 
-//TO DO
-//REMOVE GRAVITY DEMO
-
 using namespace SydPhysics;
 
-PhysicsObject::PhysicsObject(float p_mass, Entity* p_entity):
+PhysicsObject::PhysicsObject(float mass, Entity* p_entity):
 myEntity(p_entity)
 {
-	if(p_mass > 0)
+	if(mass > 0)
 	{
-		invMass = 1/p_mass;
+		invMass = 1/mass;
 	}
 	else
 	{
@@ -27,7 +24,7 @@ void PhysicsObject::SayHello()
 
 Vector2f PhysicsObject::GetForce()
 {
-	return mForce;
+	return force;
 }
 
 //Angular stuff
@@ -51,7 +48,7 @@ void PhysicsObject::AddForceAtPoint(Vector2f& point, Vector2f& force)
 
 void PhysicsObject::ClearForces()
 {
-	mForce = Vector2f();
+	force = Vector2f();
 }
 
 void PhysicsObject::ApplyLinearImpulse(Vector2f& force)
@@ -59,7 +56,7 @@ void PhysicsObject::ApplyLinearImpulse(Vector2f& force)
 	vel += force * invMass;
 }
 
-void PhysicsObject::AddForce(Vector2f force)
+void PhysicsObject::AddForce(Vector2f addedForce)
 {
-	mForce += force;
+	force += addedForce;
 }
