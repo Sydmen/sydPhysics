@@ -17,6 +17,7 @@ namespace SydPhysics
 		void SetScale(float newScale);
 		
 		Vector2f ScreenToWorldPosition(Vector2f& screenPos);
+		Vector2f WorldToScreenPosition(Vector2f& worldPos);
 	};
 
 }
