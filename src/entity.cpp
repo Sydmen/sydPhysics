@@ -21,9 +21,9 @@ Entity::Entity(Vector2f p_pos, Vector2f p_scale, SDL_Texture* p_tex)
 	currentFrame.h = 10;
 }
 
-Transform* Entity::GetTransform()
+Transform& Entity::GetTransform()
 {
-	return &transform;
+	return transform;
 }
 
 SDL_Texture* Entity::getTex()

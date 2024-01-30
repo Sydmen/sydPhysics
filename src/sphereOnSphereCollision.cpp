@@ -1,9 +1,9 @@
 #include <Collision/NarrowPhase/SphereVsSphereAlgorithm.hpp>
 
-bool SphereVsSphereAlgorithm::TestCollision(SphereShape& A, Transform* transformA, SphereShape& B, Transform* transformB, CollisionInfo& collisionInfo)
+bool SphereVsSphereAlgorithm::TestCollision(SphereShape& A, Transform& transformA, SphereShape& B, Transform& transformB, CollisionInfo& collisionInfo)
 {
 	float radiusSum = A.GetRadius() + B.GetRadius();
-	Vector2f delta = transformB->GetPosition() - transformA->GetPosition();
+	Vector2f delta = transformB.GetPosition() - transformA.GetPosition();
 	float dist = delta.GetLength();
 
 	//Collision

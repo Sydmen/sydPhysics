@@ -1,9 +1,9 @@
 #include <Collision/NarrowPhase/AABBvsSphereAlgorithm.hpp>
 
-bool AABBvsSphereAlgorithm::TestCollision(AABBShape& A, Transform* transformA, SphereShape& B, Transform* transformB, CollisionInfo& collisionInfo)
+bool AABBvsSphereAlgorithm::TestCollision(AABBShape& A, Transform& transformA, SphereShape& B, Transform& transformB, CollisionInfo& collisionInfo)
 {
 	Vector2f boxSize = A.GetHalfSize();
-	Vector2f delta = (transformB->GetPosition())-(transformA->GetPosition());
+	Vector2f delta = (transformB.GetPosition())-(transformA.GetPosition());
 
 	Vector2f nearestPoint = Vector2f::Clamp(delta, (-1*boxSize), boxSize);
 

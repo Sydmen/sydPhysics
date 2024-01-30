@@ -47,12 +47,12 @@ void RenderWindow::setCam(Camera* camera)
 
 void RenderWindow::render(Entity& p_entity)
 {
-	Vector2f camPos = activeCamera->GetTransform()->GetPosition();
+	Vector2f camPos = activeCamera->GetTransform().GetPosition();
 	float camScale = activeCamera->GetScale();
 	
-	Transform* entityTransform = p_entity.GetTransform();	
-	Vector2f entPos = entityTransform->GetPosition();
-	Vector2f entScale = entityTransform->GetScale();
+	Transform& entityTransform = p_entity.GetTransform();	
+	Vector2f entPos = entityTransform.GetPosition();
+	Vector2f entScale = entityTransform.GetScale();
 
 	//Not doing tile map shit so don't use this
 	
@@ -77,13 +77,13 @@ void RenderWindow::render(Entity& p_entity)
 void RenderWindow::renderRot(Entity& p_entity)
 {
 	//Get camera pos and scale
-	Vector2f camPos = activeCamera->GetTransform()->GetPosition();
+	Vector2f camPos = activeCamera->GetTransform().GetPosition();
 	float camScale = activeCamera->GetScale();
 	
 	//Get entity pos and scale
-	Transform* entityTransform = p_entity.GetTransform();	
-	Vector2f entPos = entityTransform->GetPosition();
-	Vector2f entScale = entityTransform->GetScale();
+	Transform& entityTransform = p_entity.GetTransform();	
+	Vector2f entPos = entityTransform.GetPosition();
+	Vector2f entScale = entityTransform.GetScale();
 
 	//Render, using orgin as center
 	SDL_Rect dest;	
@@ -92,7 +92,12 @@ void RenderWindow::renderRot(Entity& p_entity)
 	dest.w = entScale.x * camScale;
 	dest.h = entScale.y * camScale;
 	
-	SDL_RenderCopyEx(renderer, p_entity.getTex(), NULL, &dest, entityTransform->GetRotation(), NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, p_entity.getTex(), NULL, &dest, entityTransform.GetRotation(), NULL, SDL_FLIP_NONE);
+}
+
+void RenderWindow::drawLine(Vector2f posA, Vector2f posB)
+{
+	SDL_RenderDrawLine(renderer, posA.x, posA.y, posB.x, posB.y);
 }
 
 void RenderWindow::display()

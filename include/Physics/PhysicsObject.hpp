@@ -22,12 +22,12 @@ namespace SydPhysics
 		void ApplyLinearImpulse(Vector2f& force);
 
 		//Velocity
-		Vector2f GetVelocity() const
+		Vector2f GetVelocity()
 		{
 			return vel;
 		}
 
-		void SetVelocity(Vector2f newVel) const
+		void SetVelocity(Vector2f newVel)
 		{
 			vel = newVel;
 		}
@@ -38,7 +38,7 @@ namespace SydPhysics
 			return angVel;
 		}
 
-		void SetAngularVelocity(float newVel) const
+		void SetAngularVelocity(float newVel)
 		{
 			angVel = newVel;
 		}
@@ -51,7 +51,7 @@ namespace SydPhysics
 			return torque;
 		}
 
-		void SetTorque(float& newTorque) const
+		void SetTorque(float& newTorque)
 		{
 			torque = newTorque;
 		}
@@ -62,7 +62,7 @@ namespace SydPhysics
 			return myEntity;
 		}
 
-		Transform* GetTransform() const
+		Transform& GetTransform() const
 		{
 			return myEntity->GetTransform();
 		}
@@ -82,7 +82,7 @@ namespace SydPhysics
 			return myShape;
 		}
 
-		void SetCollider(CollisionShape* newShape) const
+		void SetCollider(CollisionShape* newShape)
 		{
 			myShape = newShape;
 		}

@@ -18,7 +18,7 @@ namespace SydPhysics
 
 	protected:
 		Vector2f mHalfSize;
-
+		
 		//This is the max value in box2d so im gonna borrow it :)
 		//Also, i should probably decide if i wanna run with this naming convention or nah
 		Vector2f mVerts[8];

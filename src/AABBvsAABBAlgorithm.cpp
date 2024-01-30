@@ -1,10 +1,10 @@
 #include <Collision/NarrowPhase/AABBvsAABBAlgorithm.hpp>
 #include <limits>
 
-bool AABBvsAABBAlgorithm::TestCollision(AABBShape& A, Transform* transformA, AABBShape& B, Transform* transformB, CollisionInfo& collisionInfo)
+bool AABBvsAABBAlgorithm::TestCollision(AABBShape& A, Transform& transformA, AABBShape& B, Transform& transformB, CollisionInfo& collisionInfo)
 {
-	Vector2f boxAPos = transformA->GetPosition();
-	Vector2f boxBPos = transformB->GetPosition();
+	Vector2f boxAPos = transformA.GetPosition();
+	Vector2f boxBPos = transformB.GetPosition();
 
 	Vector2f boxASize = A.GetHalfSize();
 	Vector2f boxBSize = B.GetHalfSize();

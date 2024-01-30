@@ -15,8 +15,8 @@ public:
 	Entity(Vector2f p_pos, Vector2f p_scale, SDL_Texture* p_tex);
 	~Entity(){};
 
-	Transform* GetTransform();
-
+	Transform& GetTransform();
+	
 	//Other stuff
 	SDL_Texture* getTex();
 	SDL_Rect getCurrentFrame();

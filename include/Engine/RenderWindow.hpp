@@ -18,7 +18,9 @@ public:
 
 	//Render with rotation
 	void renderRot(Entity& p_entity);
+
 	void display();
+	void drawLine(Vector2f posA, Vector2f posB);
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;

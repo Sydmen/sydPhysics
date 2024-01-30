@@ -12,7 +12,7 @@ namespace SydPhysics
 		SphereVsSphereAlgorithm() = default;
 		~SphereVsSphereAlgorithm(){};
 		
-		bool TestCollision(SphereShape& A, Transform* transformA, SphereShape& B, Transform* transformB, CollisionInfo& collisionInfo);
+		bool TestCollision(SphereShape& A, Transform& transformA, SphereShape& B, Transform& transformB, CollisionInfo& collisionInfo);
 	};
 }
 

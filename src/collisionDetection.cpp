@@ -17,8 +17,8 @@ bool CollisionDetection::ObjectIntersection(PhysicsObject* A, PhysicsObject* B, 
 	collisionInfo.a = A;
 	collisionInfo.b = B;
 
-	Transform* transformA = A->GetTransform();
-	Transform* transformB = B->GetTransform();
+	Transform& transformA = A->GetTransform();
+	Transform& transformB = B->GetTransform();
 	
 	//Check if a pair exists
 	ShapeType pairType = (ShapeType)((int)colliderA->myShape |(int)colliderB->myShape);

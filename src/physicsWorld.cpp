@@ -78,7 +78,7 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 		Vector2f velocity = rb->GetVelocity();	
 
 		Entity* entity = rb->GetEntity();
-		Transform* transform = entity->GetTransform();
+		Transform& transform = entity->GetTransform();
 
 		if(entity == nullptr)
 		{ 
@@ -87,21 +87,21 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 		}
 
 		//Add velocity to acceleration
-		Vector2f currentPos = transform->GetPosition();
+		Vector2f currentPos = transform.GetPosition();
 		Vector2f newPos = currentPos + (velocity * dt);
-		transform->SetPosition(newPos);
+		transform.SetPosition(newPos);
 
 		//Frame damping
 		velocity *= (1-dampFactor);
 		rb->SetVelocity(velocity);
 
 		//TODO: Adding angular acceleration
-		float rotation = transform->GetRotation();
+		float rotation = transform.GetRotation();
 		float angVel = rb->GetAngularVelocity();
 
 		rotation += angVel * dt;
 
-		transform->SetRotation(rotation);
+		transform.SetRotation(rotation);
 	}
 }
 
@@ -127,17 +127,17 @@ void PhysicsWorld::CheckCollisions(float dt)
 
 void PhysicsWorld::ResolveCollision(PhysicsObject& objA, PhysicsObject& objB, ContactPoint& point)
 {
-	Transform* transformA = objA.GetTransform();
-	Transform* transformB = objB.GetTransform();
+	Transform& transformA = objA.GetTransform();
+	Transform& transformB = objB.GetTransform();
 
 	//Projection
 	float massTotal = objA.GetInvMass() + objB.GetInvMass();
 
-	Vector2f projA = transformA->GetPosition() - (point.normal * (point.depth * (objA.GetInvMass() / massTotal)));
-	Vector2f projB = transformB->GetPosition() + (point.normal * (point.depth * (objB.GetInvMass() / massTotal)));
+	Vector2f projA = transformA.GetPosition() - (point.normal * (point.depth * (objA.GetInvMass() / massTotal)));
+	Vector2f projB = transformB.GetPosition() + (point.normal * (point.depth * (objB.GetInvMass() / massTotal)));
 
-	transformA->SetPosition(projA);
-	transformB->SetPosition(projB);
+	transformA.SetPosition(projA);
+	transformB.SetPosition(projB);
 
 	//Calculate impusle force
 	//Velocities needed to escape

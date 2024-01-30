@@ -32,7 +32,6 @@ int main(int argc, char* args[])
 
 	//Create physics world with custom settings
 	PhysicsWorld::WorldSettings settings;
-	settings.gravity = Vector2f();
 
 	PhysicsWorld physicsWorld(settings);
 
@@ -96,17 +95,20 @@ int main(int argc, char* args[])
 		wasdInput = wasdInput * 100;
 		cam.SetScale(cam.GetScale() + (wheelScroll * 20 * deltaTime));
 
+		Vector2f newCamPos = cam.GetTransform().GetPosition() + wasdInput * deltaTime;
+		cam.GetTransform().SetPosition(newCamPos);
+
 		Vector2f worldMouse = inputHandler.GetMousePosition();
 		worldMouse = cam.ScreenToWorldPosition(worldMouse);
-		specialObject->AddForceAtPoint(worldMouse, wasdInput);
+		//specialObject->AddForceAtPoint(worldMouse, wasdInput);
 
-		newEntityList[1]->GetTransform()->SetPosition(worldMouse);
+		//newEntityList[1]->GetTransform()->SetPosition(worldMouse);
 		
 		//Testing out springs for fun
-		Vector2f displacement = worldMouse - specialObject->GetTransform()->GetPosition();
+		Vector2f displacement = newEntityList[1]->GetTransform().GetPosition() - specialObject->GetTransform().GetPosition();
 		float k = 10;
 		specialObject->AddForce(displacement*k);
-		
+
 		//Physics loop
 		//Runs accel, velocity, and collisions
 		physicsWorld.Update(deltaTime);
