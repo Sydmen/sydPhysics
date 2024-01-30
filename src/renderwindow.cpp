@@ -97,7 +97,12 @@ void RenderWindow::renderRot(Entity& p_entity)
 
 void RenderWindow::drawLine(Vector2f posA, Vector2f posB)
 {
+	posA = activeCamera->WorldToScreenPosition(posA);
+	posB = activeCamera->WorldToScreenPosition(posB);
+
+	SDL_SetRenderDrawColor(renderer, 255,255,255,1);
 	SDL_RenderDrawLine(renderer, posA.x, posA.y, posB.x, posB.y);
+	SDL_SetRenderDrawColor(renderer, 0,0,0,1);
 }
 
 void RenderWindow::display()

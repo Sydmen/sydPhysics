@@ -49,7 +49,7 @@ int main(int argc, char* args[])
 	SphereShape shape(1);
 	PhysicsObject* specialObject = physicsWorld.CreatePhysicsObject(1, newEntityList[newEntityList.size()-1].get(), &shape, true);
 
-	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(0,0), Vector2f(0.5,0.5), sphereTexture)));
+	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,20), Vector2f(0.5,0.5), sphereTexture)));
 
 	//Create game variables
 	bool gameRunning = true;
@@ -58,8 +58,8 @@ int main(int argc, char* args[])
 	InputHandler inputHandler;
 	SDL_Event event;
 
-	Camera cam(Vector2f(-10,0), Vector2f());
-	cam.SetScale(10);
+	Camera cam(Vector2f(-30,-10), Vector2f());
+	cam.SetScale(20);
 	window.setCam(&cam);
 
 	while(gameRunning)
@@ -106,7 +106,7 @@ int main(int argc, char* args[])
 		
 		//Testing out springs for fun
 		Vector2f displacement = newEntityList[1]->GetTransform().GetPosition() - specialObject->GetTransform().GetPosition();
-		float k = 10;
+		float k = 40;
 		specialObject->AddForce(displacement*k);
 
 		//Physics loop
@@ -121,6 +121,8 @@ int main(int argc, char* args[])
 			//Maybe fix this at some point idk you're your own person and stuff
 			window.renderRot(*e.get());
 		}
+
+		window.drawLine(newEntityList[1]->GetTransform().GetPosition(), specialObject->GetTransform().GetPosition());
 
 		window.display();
 	}		
