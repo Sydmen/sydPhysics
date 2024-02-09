@@ -110,6 +110,10 @@ namespace SydPhysics
 		float torque;
 
 		Entity* myEntity;
+
+		//This seems
+		//Bad
+		//Idk
 		CollisionShape* myShape;
 	};
 }

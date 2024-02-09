@@ -1,25 +1,27 @@
 #ifndef SYDPHYSICS_COLLISIONSHAPE_H
 #define SYDPHYSICS_COLLISIONSHAPE_H
 
+#include <Math/Mathematics.hpp>
+
 namespace SydPhysics
 {
 	enum class ShapeType
 	{
+		NONE = 0,
 		AABB = 1,
 		POLY = 2,
-		SPHERE = 4,
-		NONE = 256
+		SPHERE = 4	
 	};
 
 	class CollisionShape
 	{
 	public:
 		CollisionShape(){
-			myShape = ShapeType::NONE;
+			shapeType = ShapeType::NONE;
 		}
 		~CollisionShape() {}
 
-		ShapeType myShape;
+		ShapeType shapeType;
 	};
 }
 

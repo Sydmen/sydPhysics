@@ -1,29 +1,43 @@
-#ifndef SYDPHYS_OBBSHAPE_H
-#define SYDPHYS_OBBSHAPE_H
+#ifndef SYDPHYS_POLYSHAPE_H
+#define SYDPHYS_POLYSHAPE_H
 
-#include <vector>
 using namespace std;
+#include <vector>
+
+#include <Collision/Shapes/CollisionShape.hpp>
 
 namespace SydPhysics
 {
 	class PolygonShape : public CollisionShape
 	{
 	public:
-		OBBShape()
+		PolygonShape(vector<Vector2f> verts)
 		{
-			myShape = ShapeType::POLY;
+			shapeType = ShapeType::POLY;
+
+			mVerts = verts;
+			mNormals.clear();
+
+			int n = mVerts.size();
+			Vector2f edge = mVerts[n - 1] - mVerts[0];
+			Vector2f perp = Vector2f(edge.y, -edge.x);
+			perp.Normalize();
+			mNormals.push_back(perp);
+
+			for(int i = 1; i < n; i++)
+			{
+				edge = mVerts[i] - mVerts[i-1];
+				perp = Vector2f(edge.y, -edge.x);
+				perp.Normalize();
+				mNormals.push_back(perp);
+			}
 		}
 
-		~OBBShape(){}
+		~PolygonShape(){}
 
-	protected:
-		Vector2f mHalfSize;
-		
-		//This is the max value in box2d so im gonna borrow it :)
-		//Also, i should probably decide if i wanna run with this naming convention or nah
-		Vector2f mVerts[8];
-		Vector2f mNormals[8];
-	}
+		vector<Vector2f> mVerts;
+		vector<Vector2f> mNormals;
+	};
 }
 
 #endif

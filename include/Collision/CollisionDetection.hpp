@@ -7,10 +7,12 @@
 #include <Collision/Shapes/CollisionShape.hpp>
 #include <Collision/Shapes/SphereShape.hpp>
 #include <Collision/Shapes/AABBShape.hpp>
+#include <Collision/Shapes/PolygonShape.hpp>
 
 #include <Collision/NarrowPhase/SphereVsSphereAlgorithm.hpp>
 #include <Collision/NarrowPhase/AABBvsAABBAlgorithm.hpp>
 #include <Collision/NarrowPhase/AABBvsSphereAlgorithm.hpp>
+#include <Collision/NarrowPhase/PolyVsPolyAlgorithm.hpp>
 
 namespace SydPhysics
 {
@@ -19,7 +21,8 @@ namespace SydPhysics
 	public:
 		CollisionDetection();
 
-		bool ObjectIntersection(PhysicsObject* A, PhysicsObject* B, CollisionInfo& collisionInfo);	
+		bool ObjectIntersection(PhysicsObject* A, PhysicsObject* B, CollisionInfo& collisionInfo);
+
 	protected:
 		SphereVsSphereAlgorithm mSphereVsSphereAlgorithm;
 		AABBvsAABBAlgorithm mAABBvsAABBAlgorithm;

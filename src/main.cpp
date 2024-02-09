@@ -40,16 +40,23 @@ int main(int argc, char* args[])
 
 	//Load textures
 	//Temp for demos
-	SDL_Texture* boxTexture = window.loadTexture("res/gfx/testBox.png");
-	SDL_Texture* sphereTexture = window.loadTexture("res/gfx/testCircle.png");
+	SDL_Texture* sphereTex = window.loadTexture("res/gfx/testCircle.png");
+	SDL_Texture* boxTex = window.loadTexture("res/gfx/testBox.png");
 
 	//TODO: Create a nicer function for creation of objects
 	//First sphere
-	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-1,10), Vector2f(1,1), boxTexture)));
-	SphereShape shape(1);
-	PhysicsObject* specialObject = physicsWorld.CreatePhysicsObject(1, newEntityList[newEntityList.size()-1].get(), &shape, true);
+	vector<Vector2f> testVerts{Vector2f(1,1), Vector2f(-1,1), Vector2f(-1,-1), Vector2f(1,-1)};
 
-	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,20), Vector2f(0.5,0.5), sphereTexture)));
+	/*newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-1,10), Vector2f(1,1), sphereTex)));
+	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, SphereShape(1), true);*/
+
+	SphereShape testShape(1);
+	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
+	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, &testShape, true);
+	
+	AABBShape testingShapes(Vector2f(50,1));
+	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,20), Vector2f(100,2), boxTex)));
+	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 0, &testingShapes, false);
 
 	//Create game variables
 	bool gameRunning = true;
@@ -61,6 +68,8 @@ int main(int argc, char* args[])
 	Camera cam(Vector2f(-30,-10), Vector2f());
 	cam.SetScale(20);
 	window.setCam(&cam);
+
+	float timer = 0;
 
 	while(gameRunning)
 	{
@@ -89,6 +98,9 @@ int main(int argc, char* args[])
 		float deltaTime = (SDL_GetTicks() - mTickCount) / 1000.0f;
 		mTickCount = SDL_GetTicks();
 
+		//Clear out current window
+		window.clear();
+
 		//Game loop
 		//Test input stuff
 		Vector2f wasdInput = inputHandler.TwoDMap(SDLK_w, SDLK_s, SDLK_a, SDLK_d);
@@ -98,23 +110,23 @@ int main(int argc, char* args[])
 		Vector2f newCamPos = cam.GetTransform().GetPosition() + wasdInput * deltaTime;
 		cam.GetTransform().SetPosition(newCamPos);
 
-		Vector2f worldMouse = inputHandler.GetMousePosition();
-		worldMouse = cam.ScreenToWorldPosition(worldMouse);
-		//specialObject->AddForceAtPoint(worldMouse, wasdInput);
+		Vector2f mousePosition = inputHandler.GetMousePosition();
+		mousePosition = cam.ScreenToWorldPosition(mousePosition);
+		//specialObject->SetVelocity((mousePosition - specialObject->GetTransform().GetPosition())*10);
 
-		//newEntityList[1]->GetTransform()->SetPosition(worldMouse);
-		
-		//Testing out springs for fun
-		Vector2f displacement = newEntityList[1]->GetTransform().GetPosition() - specialObject->GetTransform().GetPosition();
-		float k = 40;
-		specialObject->AddForce(displacement*k);
+		timer += deltaTime;
+		if(timer > 0.1)
+		{
+			float offset = rand() % 10;
+			newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10+offset,10), Vector2f(2,2), sphereTex)));
+			physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, &testShape, true);
+
+			timer = 0;
+		}
 
 		//Physics loop
 		//Runs accel, velocity, and collisions
 		physicsWorld.Update(deltaTime);
-		
-		//Render all objects
-		window.clear();
 
 		for(auto& e : newEntityList)
 		{
@@ -122,7 +134,7 @@ int main(int argc, char* args[])
 			window.renderRot(*e.get());
 		}
 
-		window.drawLine(newEntityList[1]->GetTransform().GetPosition(), specialObject->GetTransform().GetPosition());
+		//window.drawLine(newEntityList[1]->GetTransform().GetPosition(), specialObject->GetTransform().GetPosition());
 
 		window.display();
 	}		

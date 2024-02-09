@@ -18,13 +18,13 @@ PhysicsWorld::PhysicsWorld(const WorldSettings& worldSettings)
 //This whole function is nasty
 //I hate whoever wrote this
 //Cause i did
-PhysicsObject* PhysicsWorld::CreatePhysicsObject(float mass, Entity* entity, CollisionShape* shape, bool kinematic)
+PhysicsObject* PhysicsWorld::CreatePhysicsObject(Entity* entity, float mass, CollisionShape* shape, bool kinematic)
 {
 	unique_ptr<PhysicsObject> newObject(new PhysicsObject(mass, entity));
-	newObject.get()->SetKinematic(kinematic);
 
-	if(shape!=nullptr)
-	{
+	newObject->SetKinematic(kinematic);
+
+	if(shape != nullptr){
 		newObject->SetCollider(shape);
 	}
 
@@ -49,7 +49,7 @@ void PhysicsWorld::IntegrateAcceleration(float dt)
 	{
 		//std::cout << rb->GetTorque() << " " << tempInertia << " " << std::endl;
 		Vector2f force = rb->GetForce() * rb->GetInvMass();
-		float angularAccel = rb->GetTorque()/tempInertia;
+		//float angularAccel = rb->GetTorque()/tempInertia;
 
 		if(rb->GetInvMass() > 0)
 		{
@@ -57,7 +57,9 @@ void PhysicsWorld::IntegrateAcceleration(float dt)
 		}
 
 		rb->SetVelocity(rb->GetVelocity() + (force * dt));
-		rb->SetAngularVelocity(rb->GetAngularVelocity()+(angularAccel*dt));
+
+		//Rotation is freaking out
+		//rb->SetAngularVelocity(rb->GetAngularVelocity()+(angularAccel*dt));
 
 		float test = 0;
 		rb->ClearForces();
@@ -101,7 +103,7 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 
 		rotation += angVel * dt;
 
-		transform.SetRotation(rotation);
+		//transform.SetRotation(rotation);
 	}
 }
 
