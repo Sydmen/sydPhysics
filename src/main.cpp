@@ -1,4 +1,7 @@
 //SDL
+
+//STOP THROWING STUPID ERROS
+//YOU DO KNOW WHERE SDL IS!!!!!!!!!!!!
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 

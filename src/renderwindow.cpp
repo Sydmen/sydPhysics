@@ -54,17 +54,7 @@ void RenderWindow::render(Entity& p_entity)
 	Vector2f entPos = entityTransform.GetPosition();
 	Vector2f entScale = entityTransform.GetScale();
 
-	//Not doing tile map shit so don't use this
-	
-	/*SDL_Rect src;
-	src.x = p_entity.getCurrentFrame().x;
-	src.y = p_entity.getCurrentFrame().y;
-	src.w = p_entity.getCurrentFrame().w;
-	src.h = p_entity.getCurrentFrame().h;
-*/
-	//Position to write to on the screen
-	//IMPORTANT
-	//Currently forcing render to center on its transform orgin
+	//Force render to center on its transform orgin
 	SDL_Rect dest;	
 	dest.x = ((entPos.x - entScale.x/2) - camPos.x) * camScale;
 	dest.y = ((entPos.y - entScale.y/2) - camPos.y) * camScale;

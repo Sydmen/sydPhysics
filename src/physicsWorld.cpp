@@ -43,13 +43,10 @@ void PhysicsWorld::Update(float dt)
 void PhysicsWorld::IntegrateAcceleration(float dt)
 {
 	Vector2f gravity = mWorldSettings.gravity;
-	float tempInertia = 0.1666;
 
 	for(auto& rb : rigidbodies)
 	{
-		//std::cout << rb->GetTorque() << " " << tempInertia << " " << std::endl;
 		Vector2f force = rb->GetForce() * rb->GetInvMass();
-		//float angularAccel = rb->GetTorque()/tempInertia;
 
 		if(rb->GetInvMass() > 0)
 		{
@@ -57,14 +54,7 @@ void PhysicsWorld::IntegrateAcceleration(float dt)
 		}
 
 		rb->SetVelocity(rb->GetVelocity() + (force * dt));
-
-		//Rotation is freaking out
-		//rb->SetAngularVelocity(rb->GetAngularVelocity()+(angularAccel*dt));
-
-		float test = 0;
 		rb->ClearForces();
-		rb->SetTorque(test);
-
 
 		//(1/12) * m * (h^2 + w^2)
 	}
@@ -149,7 +139,6 @@ void PhysicsWorld::ResolveCollision(PhysicsObject& objA, PhysicsObject& objB, Co
 
 	//Get impusle force rel to normal
 	float impulseForce = Vector2f::DotProduct(contactVelocity, point.normal);
-
 
 	//Random resitution value
 	//TO DO
