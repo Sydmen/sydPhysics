@@ -18,7 +18,7 @@
 using namespace SydPhysics;
 using namespace std;
 
-int main(int argc, char* args[])
+int main(int argv, char** args)
 {
 	//Initialize window
 	if(SDL_Init(SDL_INIT_VIDEO) > 0)
