@@ -1,1 +1,5 @@
+#ignore vscode
 .vscode/
+
+#ignore compiled binaries
+*.o
