@@ -10,7 +10,7 @@ namespace SydPhysics
 	public:
 		SphereShape(float r = 1.0)
 		{
-			myShape = ShapeType::SPHERE;
+			shapeType = ShapeType::SPHERE;
 			radius = r;
 		}
 		~SphereShape() {}

@@ -110,6 +110,11 @@ namespace SydPhysics
 		float torque;
 
 		Entity* myEntity;
+
+		//Note to self
+		//Putting this in the object itself caused some weird issues
+		//So for now, keeping it as pointer
+		//Possibly could add memory allocator that adds and removes collidors but that sounds hard
 		CollisionShape* myShape;
 	};
 }

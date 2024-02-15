@@ -36,7 +36,7 @@ namespace SydPhysics
 		PhysicsWorld(const WorldSettings& worldSettings = WorldSettings());
 		~PhysicsWorld(){}
 		
-		PhysicsObject* CreatePhysicsObject(float mass, Entity* entity, CollisionShape* shape, bool kinematic);
+		PhysicsObject* CreatePhysicsObject(Entity* entity, float mass, CollisionShape* shape, bool kinematic);
 		
 		void Update(float dt);
 		void IntegrateVelocity(float dt);

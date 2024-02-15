@@ -9,7 +9,7 @@ namespace SydPhysics
 	{
 	public:
 		AABBShape(Vector2f size){
-			myShape = ShapeType::AABB;
+			shapeType = ShapeType::AABB;
 			halfSize = size;
 		}
 		~AABBShape(){}

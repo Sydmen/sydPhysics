@@ -21,23 +21,33 @@ bool CollisionDetection::ObjectIntersection(PhysicsObject* A, PhysicsObject* B, 
 	Transform& transformB = B->GetTransform();
 	
 	//Check if a pair exists
-	ShapeType pairType = (ShapeType)((int)colliderA->myShape |(int)colliderB->myShape);
+	ShapeType pairType = (ShapeType)((int)colliderA->shapeType |(int)colliderB->shapeType);
+
+	//Sphere vs Sphere
 	if(pairType == ShapeType::SPHERE)
 	{
 		return mSphereVsSphereAlgorithm.TestCollision((SphereShape&)*colliderA, transformA, (SphereShape&)*colliderB, transformB, collisionInfo);	
 	}
 
+	//AABB Vs AABB
 	if(pairType == ShapeType::AABB)
 	{
 		return mAABBvsAABBAlgorithm.TestCollision((AABBShape&)*colliderA, transformA, (AABBShape&)*colliderB, transformB, collisionInfo);
 	}
 
-	if(colliderA->myShape == ShapeType::AABB && colliderB->myShape == ShapeType::SPHERE)
+	if(pairType == ShapeType::POLY)
+	{
+		cout << "Result: " << PolyVsPolyAlgorithm::Collides((PolygonShape&)*colliderA,(PolygonShape&)*colliderB) << endl;
+		return false;
+	}
+
+	//AABB vs Sphere
+	if(colliderA->shapeType == ShapeType::AABB && colliderB->shapeType == ShapeType::SPHERE)
 	{
 		return mAABBvsSphereAlgorithm.TestCollision((AABBShape&)*colliderA, transformA, (SphereShape&)*colliderB, transformB, collisionInfo);
 	}
 	
-	if(colliderB->myShape == ShapeType::AABB && colliderA->myShape == ShapeType::SPHERE)
+	if(colliderB->shapeType == ShapeType::AABB && colliderA->shapeType == ShapeType::SPHERE)
 	{
 		//Swap
 		collisionInfo.a = B;
@@ -45,6 +55,7 @@ bool CollisionDetection::ObjectIntersection(PhysicsObject* A, PhysicsObject* B, 
 		
 		return mAABBvsSphereAlgorithm.TestCollision((AABBShape&)*colliderB, transformB, (SphereShape&)*colliderA, transformA, collisionInfo);
 	}
+
 
 
 	return false;
