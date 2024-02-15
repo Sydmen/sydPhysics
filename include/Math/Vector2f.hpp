@@ -16,6 +16,8 @@ namespace SydPhysics
 		:x(p_x), y(p_y)
 		{}
 
+		float x, y;
+
 		//Helpers
 		void print();
 
@@ -27,8 +29,8 @@ namespace SydPhysics
 
 		void Negate();
 
+		//static helper stuff
 		static float DotProduct(Vector2f const& vector1, Vector2f const& vector2);
-
 		static Vector2f Clamp(Vector2f const& vector, Vector2f const& min, Vector2f const& max);
 
 		bool operator== (Vector2f const& vector) const;
@@ -47,8 +49,6 @@ namespace SydPhysics
 		//https://www.youtube.com/watch?v=htYh-Tq7ZBI
 		Vector2f& operator*=(float const& number);
 		Vector2f& operator/=(float const& number);
-
-		float x, y;
 	};
 }
 

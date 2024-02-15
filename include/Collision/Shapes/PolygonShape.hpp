@@ -5,6 +5,7 @@ using namespace std;
 #include <vector>
 
 #include <Collision/Shapes/CollisionShape.hpp>
+#include <Engine/RenderWindow.hpp>
 
 namespace SydPhysics
 {
@@ -34,6 +35,17 @@ namespace SydPhysics
 		}
 
 		~PolygonShape(){}
+
+		//remove this at some point
+		void draw(RenderWindow window)
+		{
+			int n = mVerts.size();
+			window.drawLine(mVerts[n-1],mVerts[0]);
+			for(int i = 1; i < n; i++)
+			{
+				window.drawLine(mVerts[i-1], mVerts[i]);
+			}
+		}
 
 		vector<Vector2f> mVerts;
 		vector<Vector2f> mNormals;

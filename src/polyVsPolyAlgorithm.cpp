@@ -8,6 +8,7 @@ bool PolyVsPolyAlgorithm::Collides(PolygonShape& A, PolygonShape& B)
 		Vector2f minMax1 = SAT::FindMinMaxProjection(A, normal);
 		Vector2f minMax2 = SAT::FindMinMaxProjection(B, normal);
 
+		//Max 1 is less than min 2 or min 1 is greater than max 2
 		if(minMax1.y < minMax2.x || minMax1.x > minMax2.y) return false;
 	}	
 
@@ -16,6 +17,7 @@ bool PolyVsPolyAlgorithm::Collides(PolygonShape& A, PolygonShape& B)
 		Vector2f minMax1 = SAT::FindMinMaxProjection(A, normal);
 		Vector2f minMax2 = SAT::FindMinMaxProjection(B, normal);
 		
+		//Max 1 is less than min 2 or min 1 is greater than max 2
 		if(minMax1.y < minMax2.x || minMax1.x > minMax2.y) return false;
 	}	
 

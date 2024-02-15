@@ -5,6 +5,8 @@ using namespace SydPhysics;
 
 Vector2f SAT::FindMinMaxProjection(PolygonShape& poly, Vector2f axis)
 {
+	axis.Normalize();
+
 	float projection = Vector2f::DotProduct(poly.mVerts[0], axis);
 	float min = projection;
 	float max = projection;
@@ -12,10 +14,10 @@ Vector2f SAT::FindMinMaxProjection(PolygonShape& poly, Vector2f axis)
 	int n = poly.mVerts.size();
 	for(int i = 1; i < n; i++)
 	{
-		projection = Vector2f::DotProduct(poly.mVerts[1], axis);
+		projection = Vector2f::DotProduct(poly.mVerts[i], axis);
 		max = max > projection ? max : projection;
 		min = min < projection ? min : projection;
 	}
-
+	
 	return Vector2f(min,max);
 }

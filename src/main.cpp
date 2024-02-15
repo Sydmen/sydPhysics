@@ -35,31 +35,33 @@ int main(int argv, char** args)
 
 	//Create physics world with custom settings
 	PhysicsWorld::WorldSettings settings;
+	settings.gravity=Vector2f();
 
 	PhysicsWorld physicsWorld(settings);
 
 	//Init entity list
-	vector<unique_ptr<Entity>> newEntityList;
+	vector<unique_ptr<Entity>> entityList;
 
 	//Load textures
 	//Temp for demos
 	SDL_Texture* sphereTex = window.loadTexture("res/gfx/testCircle.png");
 	SDL_Texture* boxTex = window.loadTexture("res/gfx/testBox.png");
 
-	//TODO: Create a nicer function for creation of objects
-	//First sphere
-	vector<Vector2f> testVerts{Vector2f(1,1), Vector2f(-1,1), Vector2f(-1,-1), Vector2f(1,-1)};
+	//if you're confused, plot this on desmos
+	vector<Vector2f> triOneVerts{Vector2f(3,2), Vector2f(4,1), Vector2f(-4,1)};
+	vector<Vector2f> triTwoVerts{Vector2f(-1,2), Vector2f(-4,2), Vector2f(-2,1)};
 
 	/*newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-1,10), Vector2f(1,1), sphereTex)));
 	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, SphereShape(1), true);*/
 
-	SphereShape testShape(1);
-	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
-	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, &testShape, true);
+	PolygonShape triOne(triOneVerts);
+	PolygonShape triTwo(triTwoVerts);
+
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
+	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triOne, true);
 	
-	AABBShape testingShapes(Vector2f(50,1));
-	newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,20), Vector2f(100,2), boxTex)));
-	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 0, &testingShapes, false);
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(10,10), Vector2f(2,2), sphereTex)));
+	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triTwo, true);
 
 	//Create game variables
 	bool gameRunning = true;
@@ -71,8 +73,6 @@ int main(int argv, char** args)
 	Camera cam(Vector2f(-30,-10), Vector2f());
 	cam.SetScale(20);
 	window.setCam(&cam);
-
-	float timer = 0;
 
 	while(gameRunning)
 	{
@@ -117,21 +117,23 @@ int main(int argv, char** args)
 		mousePosition = cam.ScreenToWorldPosition(mousePosition);
 		//specialObject->SetVelocity((mousePosition - specialObject->GetTransform().GetPosition())*10);
 
-		timer += deltaTime;
-		if(timer > 0.1)
-		{
-			float offset = rand() % 10;
-			newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10+offset,10), Vector2f(2,2), sphereTex)));
-			physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, &testShape, true);
-
-			timer = 0;
-		}
-
 		//Physics loop
 		//Runs accel, velocity, and collisions
 		physicsWorld.Update(deltaTime);
 
-		for(auto& e : newEntityList)
+		// window.drawLine(triOneVerts[2], triOneVerts[0]);
+		// window.drawLine(triOneVerts[0], triOneVerts[1]);
+		// window.drawLine(triOneVerts[1], triOneVerts[2]);
+
+		triOne.draw(window);
+		triTwo.draw(window);
+
+		if(PolyVsPolyAlgorithm::Collides(triOne, triTwo))
+		{
+			cout<<"Hey"<<endl;
+		}
+
+		for(auto& e : entityList)
 		{
 			//Maybe fix this at some point idk you're your own person and stuff
 			window.renderRot(*e.get());
