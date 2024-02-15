@@ -21,7 +21,7 @@ PhysicsWorld::PhysicsWorld(const WorldSettings& worldSettings)
 PhysicsObject* PhysicsWorld::CreatePhysicsObject(Entity* entity, float mass, CollisionShape* shape, bool kinematic)
 {
 	unique_ptr<PhysicsObject> newObject(new PhysicsObject(mass, entity));
-
+	
 	newObject->SetKinematic(kinematic);
 
 	if(shape != nullptr){
