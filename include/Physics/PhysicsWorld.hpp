@@ -6,6 +6,7 @@ using namespace std;
 #include <Math/Mathematics.hpp>
 #include <Physics/PhysicsObject.hpp>
 #include <Collision/CollisionDetection.hpp>
+#include <Physics/PhysicsSettings.hpp>
 
 #include <vector>
 #include <memory>
@@ -15,24 +16,6 @@ namespace SydPhysics
 	class PhysicsWorld
 	{
 	public:
-		struct WorldSettings
-		{
-			string worldName;
-			Vector2f gravity;
-			float frameDamping;
-			float restitutionCoeffectient;
-
-			WorldSettings()
-			{
-				worldName = "Unnamed world";
-				gravity = Vector2f(0,10);
-				frameDamping = 0;
-				restitutionCoeffectient = 0.5f;
-			}
-
-			~WorldSettings() = default;
-		};
-
 		PhysicsWorld(const WorldSettings& worldSettings = WorldSettings());
 		~PhysicsWorld(){}
 		

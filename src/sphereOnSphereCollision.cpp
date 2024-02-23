@@ -14,7 +14,7 @@ bool SphereVsSphereAlgorithm::TestCollision(SphereShape& A, Transform& transform
 		Vector2f normal = delta.Normalized();
 		Vector2f localA = normal * A.GetRadius();
 		Vector2f localB = (normal * -1) * B.GetRadius();
-
+		
 		collisionInfo.AddContactPoint(localA, localB, normal, penetration);
 		
 		//Collision is present

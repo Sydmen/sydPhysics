@@ -47,6 +47,11 @@ namespace SydPhysics
 			}
 		}
 
+		void setVert(int index, Vector2f newPos)
+		{
+			mVerts[index] = newPos;
+		}
+
 		vector<Vector2f> mVerts;
 		vector<Vector2f> mNormals;
 	};

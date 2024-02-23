@@ -82,6 +82,7 @@ void RenderWindow::renderRot(Entity& p_entity)
 	dest.w = entScale.x * camScale;
 	dest.h = entScale.y * camScale;
 	
+	SDL_SetTextureColorMod(p_entity.getTex(), p_entity.r, p_entity.g, p_entity.b);
 	SDL_RenderCopyEx(renderer, p_entity.getTex(), NULL, &dest, entityTransform.GetRotation(), NULL, SDL_FLIP_NONE);
 }
 

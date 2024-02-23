@@ -53,10 +53,12 @@ void PhysicsObject::ClearForces()
 
 void PhysicsObject::ApplyLinearImpulse(Vector2f& force)
 {
+	awake = true;
 	vel += force * invMass;
 }
 
 void PhysicsObject::AddForce(Vector2f addedForce)
 {
+	awake = true;
 	force += addedForce;
 }

@@ -50,8 +50,8 @@ bool AABBvsAABBAlgorithm::TestCollision(AABBShape& A, Transform& transformA, AAB
 				normal = faces[i];
 			}
 		}
-
-		collisionInfo.AddContactPoint(Vector2f(), boxAPos-boxBPos, normal, depth);
+		
+		collisionInfo.AddContactPoint(Vector2f(), Vector2f(), normal, depth);
 		return true;
 	}
 

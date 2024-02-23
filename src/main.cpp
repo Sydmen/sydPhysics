@@ -34,8 +34,10 @@ int main(int argv, char** args)
 	RenderWindow window("SydPhysics v1", 1280, 720);
 
 	//Create physics world with custom settings
-	PhysicsWorld::WorldSettings settings;
-	settings.gravity=Vector2f();
+	WorldSettings settings;
+	settings.gravity = Vector2f(0,30);
+	settings.restitutionCoeffectient = 0.8;
+	settings.awakeEpsilon = 0.1;
 
 	PhysicsWorld physicsWorld(settings);
 
@@ -54,14 +56,33 @@ int main(int argv, char** args)
 	/*newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-1,10), Vector2f(1,1), sphereTex)));
 	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, SphereShape(1), true);*/
 
-	PolygonShape triOne(triOneVerts);
-	PolygonShape triTwo(triTwoVerts);
+	// PolygonShape triOne(triOneVerts);
+	// PolygonShape triTwo(triTwoVerts);
 
-	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
-	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triOne, true);
+	// entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
+	// physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triOne, true);
 	
-	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(10,10), Vector2f(2,2), sphereTex)));
-	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triTwo, true);
+	// entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(10,10), Vector2f(2,2), sphereTex)));
+	// physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triTwo, true);
+
+	AABBShape groundBox(Vector2f(100,5));
+	AABBShape wallBox(Vector2f(1,100));
+	SphereShape testSphere(1);
+	
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
+	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 2, &testSphere, true);
+
+	// entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-9,0), Vector2f(2,2), sphereTex)));
+	// physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &testSphere, true);
+	
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(0,50), Vector2f(200,10), boxTex)));
+	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 0, &groundBox, false);
+
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-80,-20), Vector2f(2,200), boxTex)));
+	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 0, &wallBox, false);
+
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(80,-20), Vector2f(2,200), boxTex)));
+	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 0, &wallBox, false);
 
 	//Create game variables
 	bool gameRunning = true;
@@ -69,10 +90,13 @@ int main(int argv, char** args)
 	//Create game handlers
 	InputHandler inputHandler;
 	SDL_Event event;
-
-	Camera cam(Vector2f(-30,-10), Vector2f());
-	cam.SetScale(20);
+	
+	Camera cam(Vector2f(0,-10), Vector2f());
+	cam.SetScale(10);
 	window.setCam(&cam);
+
+	Vector2f lastMousePos = inputHandler.GetMousePosition();
+	lastMousePos = cam.ScreenToWorldPosition(lastMousePos);
 
 	while(gameRunning)
 	{
@@ -117,21 +141,33 @@ int main(int argv, char** args)
 		mousePosition = cam.ScreenToWorldPosition(mousePosition);
 		//specialObject->SetVelocity((mousePosition - specialObject->GetTransform().GetPosition())*10);
 
+		if(inputHandler.KeyDown(SDLK_SPACE))
+		{	
+			float randomX = (rand()/1000) % 5;
+			entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(mousePosition.x+randomX,mousePosition.y), Vector2f(2,2), sphereTex)));
+
+			entityList[entityList.size()-1].get()->r = rand() % 255;
+			entityList[entityList.size()-1].get()->g = rand() % 255;
+			entityList[entityList.size()-1].get()->b = rand() % 255;
+			
+			PhysicsObject* newObj = physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &testSphere, true);
+
+			newObj->SetVelocity((mousePosition-lastMousePos)*10);
+		}
+
+		lastMousePos = mousePosition;
+
 		//Physics loop
-		//Runs accel, velocity, and collisions
 		physicsWorld.Update(deltaTime);
 
-		// window.drawLine(triOneVerts[2], triOneVerts[0]);
-		// window.drawLine(triOneVerts[0], triOneVerts[1]);
-		// window.drawLine(triOneVerts[1], triOneVerts[2]);
+		// triOne.draw(window);
+		// triTwo.draw(window);
+		// triOne.setVert(2, mousePosition);
 
-		triOne.draw(window);
-		triTwo.draw(window);
-
-		if(PolyVsPolyAlgorithm::Collides(triOne, triTwo))
-		{
-			cout<<"Hey"<<endl;
-		}
+		// if(PolyVsPolyAlgorithm::Collides(triOne, triTwo))
+		// {
+		// 	window.drawLine(Vector2f(2,2), Vector2f(5,5));
+		// }
 
 		for(auto& e : entityList)
 		{

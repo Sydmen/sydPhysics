@@ -20,6 +20,8 @@ public:
 	//Other stuff
 	SDL_Texture* getTex();
 	SDL_Rect getCurrentFrame();
+
+	int r,g,b;
 protected:
 	Transform transform;
 	Vector2f pos;

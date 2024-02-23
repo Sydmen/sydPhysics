@@ -19,6 +19,10 @@ Entity::Entity(Vector2f p_pos, Vector2f p_scale, SDL_Texture* p_tex)
 	//How large is a single pixel?
 	currentFrame.w = 10;
 	currentFrame.h = 10;
+
+	r = 255;
+	g = 255;
+	b = 255;
 }
 
 Transform& Entity::GetTransform()

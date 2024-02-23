@@ -3,9 +3,11 @@
 bool AABBvsSphereAlgorithm::TestCollision(AABBShape& A, Transform& transformA, SphereShape& B, Transform& transformB, CollisionInfo& collisionInfo)
 {
 	Vector2f boxSize = A.GetHalfSize();
+	Vector2f negBoxSize = boxSize * -1;
+
 	Vector2f delta = (transformB.GetPosition())-(transformA.GetPosition());
 
-	Vector2f nearestPoint = Vector2f::Clamp(delta, (-1*boxSize), boxSize);
+	Vector2f nearestPoint = Vector2f::Clamp(delta, negBoxSize, boxSize);
 
 	Vector2f localPoint = delta - nearestPoint;
 
@@ -14,6 +16,11 @@ bool AABBvsSphereAlgorithm::TestCollision(AABBShape& A, Transform& transformA, S
 	if(dist < B.GetRadius())
 	{
 		Vector2f normal = localPoint.Normalized();
+
+		if(normal.isNan())
+		{
+			normal = delta.Normalized();
+		}
 		
 		//Stupid edge case
 		//If the point enters the box, the delta and nearest point are equal, creating a normal of (0,0)
@@ -27,7 +34,6 @@ bool AABBvsSphereAlgorithm::TestCollision(AABBShape& A, Transform& transformA, S
 		collisionInfo.AddContactPoint(localA, localB, normal, depth);
 		return true;
 	}
-
 
 	return false;
 }

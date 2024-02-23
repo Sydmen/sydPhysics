@@ -25,9 +25,11 @@ namespace SydPhysics
 		float GetLength();
 
 		void Normalize();
-		Vector2f& Normalized();
+		Vector2f Normalized();
 
 		void Negate();
+
+		bool isNan();
 
 		//static helper stuff
 		static float DotProduct(Vector2f const& vector1, Vector2f const& vector2);

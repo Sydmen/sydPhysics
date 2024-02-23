@@ -26,10 +26,17 @@ namespace SydPhysics
 		y /= length;
 	}
 
-	Vector2f& Vector2f::Normalized()
+	Vector2f Vector2f::Normalized()
 	{
-		this->Normalize();
-		return *this;
+		Vector2f res = *this;
+		res.Normalize();
+		return res;
+	}
+
+	bool Vector2f::isNan()
+	{
+		if(std::isnan(this->x) || std::isnan(this->y)) return true;
+		return false;
 	}
 
 	float Vector2f::DotProduct(Vector2f const& vector1, Vector2f const& vector2)

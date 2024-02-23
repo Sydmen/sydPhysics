@@ -77,6 +77,16 @@ namespace SydPhysics
 			return invMass;
 		}
 
+		bool isAwake()
+		{
+			return awake;
+		}
+
+		void SetAwake(bool val)
+		{
+			awake = val;
+		}
+
 		CollisionShape* GetCollider() const
 		{
 			return myShape;
@@ -102,6 +112,7 @@ namespace SydPhysics
 	protected:
 		float invMass;
 		bool kinematic = true;
+		bool awake = true;
 
 		Vector2f vel;
 		Vector2f force;
@@ -110,11 +121,6 @@ namespace SydPhysics
 		float torque;
 
 		Entity* myEntity;
-
-		//Note to self
-		//Putting this in the object itself caused some weird issues
-		//So for now, keeping it as pointer
-		//Possibly could add memory allocator that adds and removes collidors but that sounds hard
 		CollisionShape* myShape;
 	};
 }
