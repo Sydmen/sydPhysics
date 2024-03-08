@@ -47,6 +47,8 @@ void RenderWindow::setCam(Camera* camera)
 
 void RenderWindow::render(Entity& p_entity)
 {
+	if(p_entity.getTex() == nullptr) return;
+
 	Vector2f camPos = activeCamera->GetTransform().GetPosition();
 	float camScale = activeCamera->GetScale();
 	
@@ -66,6 +68,8 @@ void RenderWindow::render(Entity& p_entity)
 
 void RenderWindow::renderRot(Entity& p_entity)
 {
+	if(p_entity.getTex() == nullptr) return;
+	
 	//Get camera pos and scale
 	Vector2f camPos = activeCamera->GetTransform().GetPosition();
 	float camScale = activeCamera->GetScale();
@@ -94,6 +98,20 @@ void RenderWindow::drawLine(Vector2f posA, Vector2f posB)
 	SDL_SetRenderDrawColor(renderer, 255,255,255,1);
 	SDL_RenderDrawLine(renderer, posA.x, posA.y, posB.x, posB.y);
 	SDL_SetRenderDrawColor(renderer, 0,0,0,1);
+}
+
+void RenderWindow::drawPolyShape(PhysicsObject* obj)
+{
+	if(obj->GetCollider()->shapeType != ShapeType::POLY) return;
+	PolygonShape* shape = (PolygonShape*)obj->GetCollider();
+	Vector2f pos = obj->GetTransform().GetPosition();
+
+	int n = shape->verts.size();
+	drawLine(shape->verts[n-1] + pos,shape->verts[0] + pos);
+	for(int i = 1; i < n; i++)
+	{
+		drawLine(shape->verts[i-1] + pos, shape->verts[i] + pos);
+	}
 }
 
 void RenderWindow::display()

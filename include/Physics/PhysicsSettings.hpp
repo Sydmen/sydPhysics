@@ -7,7 +7,7 @@ using namespace std;
 
 namespace SydPhysics
 {
-    struct WorldSettings
+    struct PhysicsWorldSettings
     {
         string worldName;
         Vector2f gravity;
@@ -15,16 +15,16 @@ namespace SydPhysics
         float restitutionCoeffectient;
         float awakeEpsilon;
 
-        WorldSettings()
+        PhysicsWorldSettings()
         {
             worldName = "Unnamed world";
             gravity = Vector2f(0,10);
-            frameDamping = 0;
+            frameDamping = 0.005;
             restitutionCoeffectient = 0.5f;
             awakeEpsilon = 0.1;
         }
-
-        ~WorldSettings() = default;
+        
+        ~PhysicsWorldSettings() = default;
     };
 }
 

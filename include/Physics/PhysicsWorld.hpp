@@ -16,7 +16,7 @@ namespace SydPhysics
 	class PhysicsWorld
 	{
 	public:
-		PhysicsWorld(const WorldSettings& worldSettings = WorldSettings());
+		PhysicsWorld(const PhysicsWorldSettings& worldSettings = PhysicsWorldSettings());
 		~PhysicsWorld(){}
 		
 		PhysicsObject* CreatePhysicsObject(Entity* entity, float mass, CollisionShape* shape, bool kinematic);
@@ -28,7 +28,7 @@ namespace SydPhysics
 
 		void ResolveCollision(PhysicsObject& objA, PhysicsObject& objB, ContactPoint& info);
 	protected:
-		WorldSettings mWorldSettings;
+		PhysicsWorldSettings mWorldSettings;
 		CollisionDetection mCollisionDetection;
 		vector<unique_ptr<PhysicsObject>> rigidbodies;
 	};

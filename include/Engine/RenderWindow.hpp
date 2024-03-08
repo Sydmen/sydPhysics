@@ -3,6 +3,8 @@
 #include <SDL2/SDL_image.h>
 #include <Engine/Entity.hpp>
 #include <Engine/Camera.hpp>
+#include <Physics/PhysicsObject.hpp>
+#include <Collision/Shapes/PolygonShape.hpp>
 
 class RenderWindow
 {
@@ -21,6 +23,8 @@ public:
 
 	void display();
 	void drawLine(Vector2f posA, Vector2f posB);
+
+	void drawPolyShape(PhysicsObject* obj);
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;

@@ -20,8 +20,12 @@ namespace SydPhysics
 			shapeType = ShapeType::NONE;
 		}
 		~CollisionShape() {}
+	
+		virtual void rotate(float rot, float c, float s){return;}
 
 		ShapeType shapeType;
+	protected:
+		float rotation;
 	};
 }
 

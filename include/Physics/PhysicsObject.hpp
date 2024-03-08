@@ -51,7 +51,7 @@ namespace SydPhysics
 			return torque;
 		}
 
-		void SetTorque(float& newTorque)
+		void SetTorque(float newTorque)
 		{
 			torque = newTorque;
 		}
@@ -86,7 +86,7 @@ namespace SydPhysics
 		{
 			awake = val;
 		}
-
+		
 		CollisionShape* GetCollider() const
 		{
 			return myShape;
@@ -108,6 +108,9 @@ namespace SydPhysics
 		bool IsKinematic(){return kinematic;}
 		void SetKinematic(bool state){kinematic = state;}
 
+		float GetRotation(){return rotation;}
+		void SetRotation(float newRot){rotation = newRot;}
+
 		float gravityScale = 1;
 	protected:
 		float invMass;
@@ -117,6 +120,7 @@ namespace SydPhysics
 		Vector2f vel;
 		Vector2f force;
 
+		float rotation;
 		float angVel;
 		float torque;
 

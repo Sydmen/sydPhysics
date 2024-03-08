@@ -35,10 +35,10 @@ bool CollisionDetection::ObjectIntersection(PhysicsObject* A, PhysicsObject* B, 
 		return mAABBvsAABBAlgorithm.TestCollision((AABBShape&)*colliderA, transformA, (AABBShape&)*colliderB, transformB, collisionInfo);
 	}
 
+	//Poly on poly
 	// if(pairType == ShapeType::POLY)
 	// {
-	// 	cout << "Result: " << PolyVsPolyAlgorithm::Collides((PolygonShape&)*colliderA,(PolygonShape&)*colliderB) << endl;
-	// 	return false;
+	// 	return PolyVsPolyAlgorithm::TestCollision((PolygonShape&)*colliderA, transformA, (PolygonShape&)*colliderB, transformB, collisionInfo);
 	// }
 
 	//AABB vs Sphere

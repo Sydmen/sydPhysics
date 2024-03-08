@@ -32,6 +32,14 @@ namespace SydPhysics
 		res.Normalize();
 		return res;
 	}
+	
+	Vector2f Vector2f::Perpendicular()
+	{
+		Vector2f res = *this;
+		res = Vector2f(res.y, -res.x);
+		return res;
+	}
+
 
 	bool Vector2f::isNan()
 	{

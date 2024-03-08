@@ -9,7 +9,7 @@
 
 using namespace SydPhysics;
 using namespace std;
-PhysicsWorld::PhysicsWorld(const WorldSettings& worldSettings)
+PhysicsWorld::PhysicsWorld(const PhysicsWorldSettings& worldSettings)
 {
 	mWorldSettings = worldSettings;
 }
@@ -45,17 +45,20 @@ void PhysicsWorld::IntegrateAcceleration(float dt)
 
 	for(auto& rb : rigidbodies)
 	{
-		Vector2f force = rb->GetForce() * rb->GetInvMass();
-
 		if(rb->GetInvMass() > 0)
 		{
-			force += gravity;
+			rb->AddForce(rb->GetMass() * gravity);
 		}
+
+		Vector2f force = rb->GetForce() * rb->GetInvMass();
 
 		rb->SetVelocity(rb->GetVelocity() + (force * dt));
 		rb->ClearForces();
 
-		//(1/12) * m * (h^2 + w^2)
+		//assuming it is a box of size (1,1) with a weight of 1kg
+		float angAccel = rb->GetTorque()/0.166;
+		rb->SetTorque(0);
+		rb->SetAngularVelocity(rb->GetAngularVelocity() + angAccel*dt);
 	}
 }
 
@@ -68,6 +71,15 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 		if(rb->isAwake())
 		{
 			//Get velocity for timestep
+			Entity* entity = rb->GetEntity();
+			Transform& transform = entity->GetTransform();
+
+			if(entity == nullptr)
+			{ 		
+				std::cout << "Entity not found!." << std::endl;
+				continue;
+			}
+
 			Vector2f velocity = rb->GetVelocity();	
 
 			//Check if velocity is small enough to be asleep
@@ -78,15 +90,6 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 			}
 			else
 			{
-				Entity* entity = rb->GetEntity();
-				Transform& transform = entity->GetTransform();
-
-				if(entity == nullptr)
-				{ 		
-					std::cout << "Entity not found!." << std::endl;
-					continue;
-				}
-
 				//Add velocity to acceleration
 				Vector2f currentPos = transform.GetPosition();
 				Vector2f newPos = currentPos + (velocity * dt);
@@ -94,9 +97,12 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 
 				//Frame damping
 				velocity *= (1-dampFactor);
-				rb->SetVelocity(velocity);
+				rb->SetVelocity(velocity);				
 			}
 
+			transform.SetRotation(transform.GetRotation() + rb->GetAngularVelocity());
+			rb->GetCollider()->rotate(transform.GetRotation(), transform.c, transform.s);
+				
 			//TODO: Adding angular acceleration
 			// float rotation = transform.GetRotation();
 			// float angVel = rb->GetAngularVelocity();

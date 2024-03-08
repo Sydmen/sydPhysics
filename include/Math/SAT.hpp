@@ -9,7 +9,7 @@ namespace SydPhysics
 	class SAT
 	{
 	public:
-		static Vector2f FindMinMaxProjection(PolygonShape& poly, Vector2f axis);
+		static Vector2f FindMinMaxProjection(PolygonShape& poly, Vector2f axis, Transform& transform);
 	};
 }
 

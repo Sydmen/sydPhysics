@@ -41,8 +41,8 @@ void PhysicsObject::AddForceAtPoint(Vector2f& point, Vector2f& force)
 {
 	//http://www.chrishecker.com/images/c/c2/Gdmphys2.pdf
 	//Figure 4
-	Vector2f orgin = myEntity->GetTransform().GetPosition();
-	Vector2f perpVector = Vector2f(orgin.y - point.y, point.x - orgin.x);
+	Vector2f origin = myEntity->GetTransform().GetPosition();
+	Vector2f perpVector = Vector2f(point.y - origin.y, origin.x - point.x);
 	torque += Vector2f::DotProduct(perpVector, force);
 }
 

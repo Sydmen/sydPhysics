@@ -12,7 +12,7 @@ namespace SydPhysics
 		PolyVsPolyAlgorithm()=default;
 		~PolyVsPolyAlgorithm();
 		
-		static bool Collides(PolygonShape& A, PolygonShape& B);
+		static bool TestCollision(PolygonShape& A, Transform& transformA, PolygonShape& B, Transform& transformB, CollisionInfo& collisionInfo);
 	};
 }
 

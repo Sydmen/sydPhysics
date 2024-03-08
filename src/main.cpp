@@ -31,58 +31,31 @@ int main(int argv, char** args)
 		std::cout << "IMG_INIT HAS FAILED: SDL_ERROR: " << SDL_GetError() << std::endl;
 
 	uint32_t mTickCount = 0;
-	RenderWindow window("SydPhysics v1", 1280, 720);
+	RenderWindow window("SydPhysics", 1280, 720);
 
 	//Create physics world with custom settings
-	WorldSettings settings;
-	settings.gravity = Vector2f(0,30);
-	settings.restitutionCoeffectient = 0.8;
+	PhysicsWorldSettings settings;
+	settings.gravity = Vector2f();
+	settings.restitutionCoeffectient = 0.5;
 	settings.awakeEpsilon = 0.1;
-
+	
 	PhysicsWorld physicsWorld(settings);
 
 	//Init entity list
 	vector<unique_ptr<Entity>> entityList;
 
 	//Load textures
-	//Temp for demos
-	SDL_Texture* sphereTex = window.loadTexture("res/gfx/testCircle.png");
 	SDL_Texture* boxTex = window.loadTexture("res/gfx/testBox.png");
 
-	//if you're confused, plot this on desmos
-	vector<Vector2f> triOneVerts{Vector2f(3,2), Vector2f(4,1), Vector2f(-4,1)};
-	vector<Vector2f> triTwoVerts{Vector2f(-1,2), Vector2f(-4,2), Vector2f(-2,1)};
+	vector<Vector2f> boxVerts{Vector2f(1,1), Vector2f(-1,1), Vector2f(-1,-2), Vector2f(1,-1)};
+	PolygonShape polyShape(boxVerts);
+	PolygonShape otherPolyShape(boxVerts);
 
-	/*newEntityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-1,10), Vector2f(1,1), sphereTex)));
-	physicsWorld.CreatePhysicsObject(newEntityList[newEntityList.size()-1].get(), 1, SphereShape(1), true);*/
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(0,0), Vector2f(2,2), nullptr)));
+	PhysicsObject* specialObject = physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &polyShape, true);
 
-	// PolygonShape triOne(triOneVerts);
-	// PolygonShape triTwo(triTwoVerts);
-
-	// entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
-	// physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triOne, true);
-	
-	// entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(10,10), Vector2f(2,2), sphereTex)));
-	// physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &triTwo, true);
-
-	AABBShape groundBox(Vector2f(100,5));
-	AABBShape wallBox(Vector2f(1,100));
-	SphereShape testSphere(1);
-	
-	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-10,10), Vector2f(2,2), sphereTex)));
-	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 2, &testSphere, true);
-
-	// entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-9,0), Vector2f(2,2), sphereTex)));
-	// physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &testSphere, true);
-	
-	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(0,50), Vector2f(200,10), boxTex)));
-	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 0, &groundBox, false);
-
-	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-80,-20), Vector2f(2,200), boxTex)));
-	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 0, &wallBox, false);
-
-	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(80,-20), Vector2f(2,200), boxTex)));
-	physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 0, &wallBox, false);
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-4,0), Vector2f(2,2), nullptr)));
+	PhysicsObject* otherSpecialObject = physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &otherPolyShape, true);
 
 	//Create game variables
 	bool gameRunning = true;
@@ -91,7 +64,7 @@ int main(int argv, char** args)
 	InputHandler inputHandler;
 	SDL_Event event;
 	
-	Camera cam(Vector2f(0,-10), Vector2f());
+	Camera cam(Vector2f(-10,-10), Vector2f());
 	cam.SetScale(10);
 	window.setCam(&cam);
 
@@ -131,51 +104,25 @@ int main(int argv, char** args)
 		//Game loop
 		//Test input stuff
 		Vector2f wasdInput = inputHandler.TwoDMap(SDLK_w, SDLK_s, SDLK_a, SDLK_d);
-		wasdInput = wasdInput * 100;
-		cam.SetScale(cam.GetScale() + (wheelScroll * 20 * deltaTime));
-
-		Vector2f newCamPos = cam.GetTransform().GetPosition() + wasdInput * deltaTime;
-		cam.GetTransform().SetPosition(newCamPos);
+		wasdInput = wasdInput * 10 * deltaTime;
 
 		Vector2f mousePosition = inputHandler.GetMousePosition();
 		mousePosition = cam.ScreenToWorldPosition(mousePosition);
-		//specialObject->SetVelocity((mousePosition - specialObject->GetTransform().GetPosition())*10);
+		
+		specialObject->AddForce(wasdInput);
 
-		if(inputHandler.KeyDown(SDLK_SPACE))
-		{	
-			float randomX = (rand()/1000) % 5;
-			entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(mousePosition.x+randomX,mousePosition.y), Vector2f(2,2), sphereTex)));
-
-			entityList[entityList.size()-1].get()->r = rand() % 255;
-			entityList[entityList.size()-1].get()->g = rand() % 255;
-			entityList[entityList.size()-1].get()->b = rand() % 255;
-			
-			PhysicsObject* newObj = physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &testSphere, true);
-
-			newObj->SetVelocity((mousePosition-lastMousePos)*10);
-		}
-
-		lastMousePos = mousePosition;
+		window.drawPolyShape(specialObject);
+		window.drawPolyShape(otherSpecialObject);
+		
+		cam.SetScale(cam.GetScale() + (wheelScroll * 20 * deltaTime));
 
 		//Physics loop
 		physicsWorld.Update(deltaTime);
 
-		// triOne.draw(window);
-		// triTwo.draw(window);
-		// triOne.setVert(2, mousePosition);
-
-		// if(PolyVsPolyAlgorithm::Collides(triOne, triTwo))
-		// {
-		// 	window.drawLine(Vector2f(2,2), Vector2f(5,5));
-		// }
-
 		for(auto& e : entityList)
 		{
-			//Maybe fix this at some point idk you're your own person and stuff
 			window.renderRot(*e.get());
 		}
-
-		//window.drawLine(newEntityList[1]->GetTransform().GetPosition(), specialObject->GetTransform().GetPosition());
 
 		window.display();
 	}		

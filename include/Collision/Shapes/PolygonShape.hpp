@@ -12,48 +12,73 @@ namespace SydPhysics
 	class PolygonShape : public CollisionShape
 	{
 	public:
-		PolygonShape(vector<Vector2f> verts)
+		PolygonShape(vector<Vector2f> mVerts)
 		{
 			shapeType = ShapeType::POLY;
 
-			mVerts = verts;
-			mNormals.clear();
+			rawVerts = mVerts;
+			verts = mVerts;
 
-			int n = mVerts.size();
-			Vector2f edge = mVerts[n - 1] - mVerts[0];
-			Vector2f perp = Vector2f(edge.y, -edge.x);
-			perp.Normalize();
-			mNormals.push_back(perp);
-
-			for(int i = 1; i < n; i++)
-			{
-				edge = mVerts[i] - mVerts[i-1];
-				perp = Vector2f(edge.y, -edge.x);
-				perp.Normalize();
-				mNormals.push_back(perp);
-			}
+			calculateNormals();
 		}
 
 		~PolygonShape(){}
 
-		//remove this at some point
-		void draw(RenderWindow window)
+		void rotate(float rot, float c, float s)
 		{
-			int n = mVerts.size();
-			window.drawLine(mVerts[n-1],mVerts[0]);
+			if(rot == rotation)
+			{
+				return;
+			}
+
+			rotation = rot;
+
+			int n = rawVerts.size();
+			
+			for(int i = 0; i < n; i++)
+			{
+				Vector2f rawVert = rawVerts[i];
+
+				verts[i].x = (rawVert.x*c) - (rawVert.y*s);
+				verts[i].y = (rawVert.x*s) + (rawVert.y*c);
+			}
+
+			calculateNormals();
+		}
+
+		void calculateNormals()
+		{
+			normals.clear();
+			int n = rawVerts.size();
+			
+			//for each edge, create a perp vector for normal vector
+			Vector2f edge = verts[n - 1] - verts[0];
+			Vector2f perp = Vector2f(edge.y, -edge.x);
+			perp.Normalize();
+			normals.push_back(perp);
+
 			for(int i = 1; i < n; i++)
 			{
-				window.drawLine(mVerts[i-1], mVerts[i]);
+				edge = verts[i] - verts[i-1];
+				perp = Vector2f(edge.y, -edge.x);
+				perp.Normalize();
+				normals.push_back(perp);
 			}
 		}
 
 		void setVert(int index, Vector2f newPos)
 		{
-			mVerts[index] = newPos;
+			rawVerts[index] = newPos;
 		}
 
-		vector<Vector2f> mVerts;
-		vector<Vector2f> mNormals;
+		//list of relative verts without transformation
+		vector<Vector2f> rawVerts;
+
+		//list of transformed verts
+		vector<Vector2f> verts;
+
+		//normals of verts
+		vector<Vector2f> normals;
 	};
 }
 

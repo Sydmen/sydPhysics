@@ -27,6 +27,8 @@ namespace SydPhysics
 		void Normalize();
 		Vector2f Normalized();
 
+		Vector2f Perpendicular();
+
 		void Negate();
 
 		bool isNan();

@@ -17,7 +17,7 @@ bool AABBvsSphereAlgorithm::TestCollision(AABBShape& A, Transform& transformA, S
 	{
 		Vector2f normal = localPoint.Normalized();
 
-		if(normal.isNan())
+		if(localPoint == nearestPoint)
 		{
 			normal = delta.Normalized();
 		}

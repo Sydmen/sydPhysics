@@ -16,10 +16,20 @@ namespace SydPhysics{
 		void SetPosition(Vector2f& newPos){position = newPos;}
 
 		float GetRotation(){return rotation;}
-		void SetRotation(float& newRot){rotation = newRot;}
-
+		
+		void SetRotation(float newRot)
+		{
+			//cachce sine and cosine values when rotated
+			rotation = newRot;
+			c = cosf(rotation);
+			s = sinf(rotation);
+		}
+		
 		Vector2f GetScale(){return scale;}
 		void SetScale(Vector2f& newScale){scale = newScale;}
+
+		float c = 1;
+		float s = 0;
 	private:
 		Vector2f position;
 		float rotation = 0;
