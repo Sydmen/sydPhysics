@@ -100,17 +100,39 @@ void RenderWindow::drawLine(Vector2f posA, Vector2f posB)
 	SDL_SetRenderDrawColor(renderer, 0,0,0,1);
 }
 
+void RenderWindow::drawLine(Vector2f posA, Vector2f posB, float r, float g, float b)
+{
+	posA = activeCamera->WorldToScreenPosition(posA);
+	posB = activeCamera->WorldToScreenPosition(posB);
+
+	SDL_SetRenderDrawColor(renderer, r,g,b,1);
+	SDL_RenderDrawLine(renderer, posA.x, posA.y, posB.x, posB.y);
+	SDL_SetRenderDrawColor(renderer, 0,0,0,1);
+}
+
 void RenderWindow::drawPolyShape(PhysicsObject* obj)
 {
 	if(obj->GetCollider()->shapeType != ShapeType::POLY) return;
 	PolygonShape* shape = (PolygonShape*)obj->GetCollider();
 	Vector2f pos = obj->GetTransform().GetPosition();
 
+	//draw edges
 	int n = shape->verts.size();
-	drawLine(shape->verts[n-1] + pos,shape->verts[0] + pos);
+	drawLine(shape->verts[n-1] + pos,shape->verts[0] + pos, 0, 255, 0);
+
 	for(int i = 1; i < n; i++)
 	{
 		drawLine(shape->verts[i-1] + pos, shape->verts[i] + pos);
+	}
+
+	//draw normals
+	Vector2f half = (shape->verts[n-1]+shape->verts[0])/2;
+	drawLine(half + pos,(half+shape->normals[0]) + pos, 255, 0, 0);
+	
+	for(int i = 1; i < n; i++)
+	{
+		half = (shape->verts[i-1]+shape->verts[i])/2;
+		drawLine(half + pos,(half+shape->normals[i]) + pos, 255, 0, 0);
 	}
 }
 

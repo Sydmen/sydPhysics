@@ -52,12 +52,16 @@ void PhysicsWorld::IntegrateAcceleration(float dt)
 
 		Vector2f force = rb->GetForce() * rb->GetInvMass();
 
-		rb->SetVelocity(rb->GetVelocity() + (force * dt));
+		rb->SetVelocity(rb->GetVelocity() + (force));
 		rb->ClearForces();
+
+		//this code is making the objects spin for some reason?
 
 		//assuming it is a box of size (1,1) with a weight of 1kg
 		float angAccel = rb->GetTorque()/0.166;
 		rb->SetTorque(0);
+
+		if(angAccel == 0) return;
 		rb->SetAngularVelocity(rb->GetAngularVelocity() + angAccel*dt);
 	}
 }
@@ -101,8 +105,14 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 			}
 
 			transform.SetRotation(transform.GetRotation() + rb->GetAngularVelocity());
-			rb->GetCollider()->rotate(transform.GetRotation(), transform.c, transform.s);
-				
+
+			//for some reason, without this check the object spins alot
+			//weird stuff
+			if(transform.GetRotation() != 0)
+			{
+				rb->GetCollider()->rotate(transform.GetRotation(), transform.c, transform.s);
+			}
+			
 			//TODO: Adding angular acceleration
 			// float rotation = transform.GetRotation();
 			// float angVel = rb->GetAngularVelocity();

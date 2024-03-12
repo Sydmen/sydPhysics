@@ -40,7 +40,7 @@ bool CollisionDetection::ObjectIntersection(PhysicsObject* A, PhysicsObject* B, 
 	// {
 	// 	return PolyVsPolyAlgorithm::TestCollision((PolygonShape&)*colliderA, transformA, (PolygonShape&)*colliderB, transformB, collisionInfo);
 	// }
-
+	
 	//AABB vs Sphere
 	if(colliderA->shapeType == ShapeType::AABB && colliderB->shapeType == ShapeType::SPHERE)
 	{
@@ -55,8 +55,6 @@ bool CollisionDetection::ObjectIntersection(PhysicsObject* A, PhysicsObject* B, 
 		
 		return mAABBvsSphereAlgorithm.TestCollision((AABBShape&)*colliderB, transformB, (SphereShape&)*colliderA, transformA, collisionInfo);
 	}
-
-
 
 	return false;
 }

@@ -37,7 +37,7 @@ int main(int argv, char** args)
 	PhysicsWorldSettings settings;
 	settings.gravity = Vector2f();
 	settings.restitutionCoeffectient = 0.5;
-	settings.awakeEpsilon = 0.1;
+	settings.awakeEpsilon = 0;
 	
 	PhysicsWorld physicsWorld(settings);
 
@@ -45,16 +45,17 @@ int main(int argv, char** args)
 	vector<unique_ptr<Entity>> entityList;
 
 	//Load textures
-	SDL_Texture* boxTex = window.loadTexture("res/gfx/testBox.png");
+	//SDL_Texture* boxTex = window.loadTexture("res/gfx/testBox.png");
 
 	vector<Vector2f> boxVerts{Vector2f(1,1), Vector2f(-1,1), Vector2f(-1,-2), Vector2f(1,-1)};
+
 	PolygonShape polyShape(boxVerts);
 	PolygonShape otherPolyShape(boxVerts);
 
 	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(0,0), Vector2f(2,2), nullptr)));
 	PhysicsObject* specialObject = physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &polyShape, true);
 
-	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-4,0), Vector2f(2,2), nullptr)));
+	entityList.push_back(unique_ptr<Entity>(new Entity(Vector2f(-3,0), Vector2f(2,2), nullptr)));
 	PhysicsObject* otherSpecialObject = physicsWorld.CreatePhysicsObject(entityList[entityList.size()-1].get(), 1, &otherPolyShape, true);
 
 	//Create game variables
@@ -113,6 +114,16 @@ int main(int argv, char** args)
 
 		window.drawPolyShape(specialObject);
 		window.drawPolyShape(otherSpecialObject);
+
+		CollisionInfo info;	
+		if(PolyVsPolyAlgorithm::TestCollision(polyShape, specialObject->GetTransform(), otherPolyShape, otherSpecialObject->GetTransform(), info)==true)
+		{
+			window.drawLine(Vector2f(0,0), Vector2f(5,5));
+		}
+		else
+		{
+			window.drawLine(Vector2f(0,0), Vector2f(5,0));
+		}
 		
 		cam.SetScale(cam.GetScale() + (wheelScroll * 20 * deltaTime));
 

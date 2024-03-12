@@ -22,7 +22,9 @@ public:
 	void renderRot(Entity& p_entity);
 
 	void display();
+	
 	void drawLine(Vector2f posA, Vector2f posB);
+	void drawLine(Vector2f posA, Vector2f posB, float r, float g, float b);
 
 	void drawPolyShape(PhysicsObject* obj);
 private:

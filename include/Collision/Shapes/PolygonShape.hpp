@@ -30,7 +30,7 @@ namespace SydPhysics
 			{
 				return;
 			}
-
+			
 			rotation = rot;
 
 			int n = rawVerts.size();
@@ -52,7 +52,7 @@ namespace SydPhysics
 			int n = rawVerts.size();
 			
 			//for each edge, create a perp vector for normal vector
-			Vector2f edge = verts[n - 1] - verts[0];
+			Vector2f edge = verts[0] - verts[n-1];
 			Vector2f perp = Vector2f(edge.y, -edge.x);
 			perp.Normalize();
 			normals.push_back(perp);

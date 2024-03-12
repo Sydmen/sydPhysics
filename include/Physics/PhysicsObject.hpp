@@ -110,7 +110,7 @@ namespace SydPhysics
 
 		float GetRotation(){return rotation;}
 		void SetRotation(float newRot){rotation = newRot;}
-
+		
 		float gravityScale = 1;
 	protected:
 		float invMass;
@@ -120,9 +120,9 @@ namespace SydPhysics
 		Vector2f vel;
 		Vector2f force;
 
-		float rotation;
-		float angVel;
-		float torque;
+		float rotation = 0;
+		float angVel = 0;
+		float torque = 0;
 
 		Entity* myEntity;
 		CollisionShape* myShape;
