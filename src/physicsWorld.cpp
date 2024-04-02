@@ -60,7 +60,7 @@ void PhysicsWorld::IntegrateAcceleration(float dt)
 		//assuming it is a box of size (1,1) with a weight of 1kg
 		float angAccel = rb->GetTorque()/0.166;
 		rb->SetTorque(0);
-
+		
 		if(angAccel == 0) return;
 		rb->SetAngularVelocity(rb->GetAngularVelocity() + angAccel*dt);
 	}
@@ -80,7 +80,7 @@ void PhysicsWorld::IntegrateVelocity(float dt)
 
 			if(entity == nullptr)
 			{ 		
-				std::cout << "Entity not found!." << std::endl;
+				std::cout << "Entity not found!" << std::endl;
 				continue;
 			}
 

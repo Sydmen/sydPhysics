@@ -36,10 +36,10 @@ bool CollisionDetection::ObjectIntersection(PhysicsObject* A, PhysicsObject* B, 
 	}
 
 	//Poly on poly
-	// if(pairType == ShapeType::POLY)
-	// {
-	// 	return PolyVsPolyAlgorithm::TestCollision((PolygonShape&)*colliderA, transformA, (PolygonShape&)*colliderB, transformB, collisionInfo);
-	// }
+	if(pairType == ShapeType::POLY)
+	{
+		return PolyVsPolyAlgorithm::TestCollision((PolygonShape&)*colliderA, transformA, (PolygonShape&)*colliderB, transformB, collisionInfo);
+	}
 	
 	//AABB vs Sphere
 	if(colliderA->shapeType == ShapeType::AABB && colliderB->shapeType == ShapeType::SPHERE)

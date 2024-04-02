@@ -13,7 +13,7 @@ Vector2f SAT::FindMinMaxProjection(PolygonShape& poly, Vector2f axis, Transform&
 	float projection = Vector2f::DotProduct(verts[0]+pos, axis);
 	float min = projection;
 	float max = projection;
-
+	
 	int n = verts.size();
 	for(int i = 1; i < n; i++)
 	{

@@ -12,6 +12,7 @@ namespace SydPhysics
 		PolyVsPolyAlgorithm()=default;
 		~PolyVsPolyAlgorithm();
 		
+		static float FindAxisLeastPen(int* faceIndex, PolygonShape& A, Transform& transformA, PolygonShape& B, Transform& transformB);
 		static bool TestCollision(PolygonShape& A, Transform& transformA, PolygonShape& B, Transform& transformB, CollisionInfo& collisionInfo);
 	};
 }

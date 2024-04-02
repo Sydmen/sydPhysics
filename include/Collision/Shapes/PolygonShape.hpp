@@ -18,6 +18,7 @@ namespace SydPhysics
 
 			rawVerts = mVerts;
 			verts = mVerts;
+			vertexCount = verts.size();
 
 			calculateNormals();
 		}
@@ -32,10 +33,8 @@ namespace SydPhysics
 			}
 			
 			rotation = rot;
-
-			int n = rawVerts.size();
 			
-			for(int i = 0; i < n; i++)
+			for(int i = 0; i < vertexCount; i++)
 			{
 				Vector2f rawVert = rawVerts[i];
 
@@ -49,15 +48,14 @@ namespace SydPhysics
 		void calculateNormals()
 		{
 			normals.clear();
-			int n = rawVerts.size();
 			
 			//for each edge, create a perp vector for normal vector
-			Vector2f edge = verts[0] - verts[n-1];
+			Vector2f edge = verts[0] - verts[vertexCount-1];
 			Vector2f perp = Vector2f(edge.y, -edge.x);
 			perp.Normalize();
 			normals.push_back(perp);
 
-			for(int i = 1; i < n; i++)
+			for(int i = 1; i < vertexCount; i++)
 			{
 				edge = verts[i] - verts[i-1];
 				perp = Vector2f(edge.y, -edge.x);
@@ -71,6 +69,26 @@ namespace SydPhysics
 			rawVerts[index] = newPos;
 		}
 
+		Vector2f GetSupport(const Vector2f& dir)
+		{
+			float bestProjection = -__FLT_MAX__;
+			Vector2f bestVert;
+
+			for(int i = 0; i < vertexCount; i++)
+			{
+				Vector2f vert = verts[i];
+				float projection = Vector2f::DotProduct(vert, dir);
+
+				if(projection > bestProjection)
+				{
+					bestVert = vert;
+					bestProjection = projection;
+				}
+			}
+
+			return bestVert;
+		}
+
 		//list of relative verts without transformation
 		vector<Vector2f> rawVerts;
 
@@ -79,6 +97,8 @@ namespace SydPhysics
 
 		//normals of verts
 		vector<Vector2f> normals;
+
+		int vertexCount;
 	};
 }
 
